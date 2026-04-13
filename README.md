@@ -1,2 +1,2 @@
 # Juego-cubirds
-Juego de cartas programado en Java
+Juego de cartas programado en Java.
