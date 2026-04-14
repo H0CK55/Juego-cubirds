@@ -1,19 +1,20 @@
 package gal.uvigo.esei.aed1.cubirds.core;
- 
-import java.util.ArrayList;
- 
+
+import es.uvigo.esei.aed1.tads.list.LinkedList;
+import es.uvigo.esei.aed1.tads.list.List;
+
 public class Table {
- 
-    private ArrayList<ArrayList<Card>> rows;
- 
+
+    private List<List<Card>> rows;
+
     public Table() {
-        rows = new ArrayList<>();
+        rows = new LinkedList<>();
         for (int i = 0; i < 4; i++) {
-            rows.add(new ArrayList<>());
+            rows.addLast(new LinkedList<>());
         }
     }
- 
-    // Funcion que devuelve true si se puede colocar la carta en esa fila
+
+    // Devuelve true si se puede colocar la carta en esa fila sin repetir especie
     public boolean canPlace(int fila, Card card) {
         for (Card c : rows.get(fila)) {
             if (c.getTypeBird() == card.getTypeBird()) {
@@ -22,15 +23,15 @@ public class Table {
         }
         return true;
     }
- 
+
     // Coloca una carta en la fila indicada si hay espacio disponible
     public void placeCard(int fila, Card card) {
         if (rows.get(fila).size() < 3) {
-            rows.get(fila).add(card);
+            rows.get(fila).addLast(card);
         }
     }
- 
-    // Funcion que devuelve el estado de la mesa como String
+
+    // Devuelve el estado de la mesa como String
     public String showTable() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 4; i++) {
@@ -43,4 +44,3 @@ public class Table {
         return sb.toString();
     }
 }
- 

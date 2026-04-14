@@ -37,7 +37,7 @@ public class Game {
     // Crea y mezcla la baraja y crea la mesa
     private void setupDeckAndTable() {
         deck = new DeckOfCards();
-        deck.Shuffle();
+        deck.shuffle();
         table = new Table();
     }
 
