@@ -22,6 +22,9 @@ public class Game {
         dealCards();
         fillTable();
         showResults();
+        playRounds();
+        playTurn();
+        playCrds();
     }
 
     // Pregunta el numero de jugadores y los crea
@@ -73,4 +76,53 @@ public class Game {
             iu.displayMessage(players[i].showHand());
         }
     }
+}
+private void playRounds() {
+    boolean fin = false;
+
+    while (!fin) {
+        for (Player player : players) {
+
+            playTurn(player);
+
+            if (player.getHandSize() == 0) {
+                iu.displayMessage("¡" + player.getName() + " se ha quedado sin cartas!");
+                fin = true;
+                break;
+            }
+        }
+    }
+}
+private void playTurn(Player player) {
+
+    iu.displayMessage("Turno de " + player.getName());
+    iu.displayMessage(player.showHand());
+
+    TypeBird tipo = iu.askTypeBird();     // tendrás que implementarlo en IU
+    int fila = iu.askRow();               // 0–3
+    boolean izquierda = iu.askSide();     // true = izq
+
+    playCards(player, tipo, fila, izquierda);
+
+    iu.displayMessage("Mano actualizada:");
+    iu.displayMessage(player.showHand());
+}
+
+private void playCards(Player player, TypeBird tipo, int fila, boolean izquierda) {
+
+    // Obtener cartas de ese tipo
+    Card[] cartas = player.getCardsByType(tipo);
+
+    // Quitarlas de la mano
+    player.removeCards(cartas);
+
+    // Colocarlas en la mesa
+    if (izquierda) {
+        table.placeCardsLeft(fila, cartas);
+    } else {
+        table.placeCardsRight(fila, cartas);
+    }
+
+    // Resolver rodeo
+    resolveEncircle(player, fila, tipo);
 }
