@@ -17,7 +17,8 @@ public class Player {
         return name;
     }
 
-    // Añade una carta en la posicion correcta para mantener la mano ordenada por especie
+    // Añade una carta en la posicion correcta para mantener la mano ordenada por
+    // especie
     public void addCard(Card card) {
         int i = 0;
         while (i < mano.size() && mano.get(i).getTypeBird().ordinal() <= card.getTypeBird().ordinal()) {
@@ -34,5 +35,30 @@ public class Player {
             sb.append(card).append(" ");
         }
         return sb.toString();
+    }
+
+    // Devuelve las esepecies que tiene en la mano sin repetir
+    public List<TypeBird> getSpecies() {
+        List<TypeBird> species = new LinkedList<>();
+        for (Card card : mano) {
+            if (!species.contains(card.getTypeBird())) {
+                species.addLast(card.getTypeBird());
+            }
+        }
+        return species;
+    }
+
+    // Retira todas las cartas de una especie dada y las devuelve en una lista
+    public List<Card> removeSpecies(TypeBird type) {
+        List<Card> removed = new LinkedList<>();
+        int i = 0;
+        while (i < mano.size()) {
+            if (mano.get(i).getTypeBird() == type) {
+                removed.addLast(mano.remove(i));
+            } else {
+                i++;
+            }
+        }
+        return removed;
     }
 }

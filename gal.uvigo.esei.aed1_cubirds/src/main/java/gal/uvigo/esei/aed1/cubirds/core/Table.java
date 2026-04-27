@@ -43,4 +43,38 @@ public class Table {
         }
         return sb.toString();
     }
+
+    // Añade cartas al lado izquierdo o derecho de la fila indicada
+
+    public void addLeft(int fila, List<Card> cards) {
+        for (Card card : cards) {
+            rows.get(fila).addFirst(card);
+        }
+    }
+
+    public void addRight(int fila, List<Card> cards) {
+        for (Card card : cards) {
+            rows.get(fila).addLast(card);
+        }
+    }
+
+    // Recoge las cartas rodeadas de la especie dada en la fila indicada
+    public List<Card> collectSurrounded(int fila, TypeBird type, boolean left) {
+        List<Card> surrounded = new LinkedList<>();
+        List<Card> row = rows.get(fila);
+
+        if (left) {
+            // Saca cartas del principio hasta encontrar la especie
+            while (!row.isEmpty() && row.getFirst().getTypeBird() != type) {
+                surrounded.addLast(row.removeFirst());
+            }
+        } else {
+            // Saca cartas del final hasta encontrar la especie
+            while (!row.isEmpty() && row.getLast().getTypeBird() != type) {
+                surrounded.addFirst(row.removeLast());
+            }
+        }
+
+        return surrounded;
+    }
 }

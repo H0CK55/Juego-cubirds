@@ -1,6 +1,7 @@
 package gal.uvigo.esei.aed1.cubirds.core;
 
 import gal.uvigo.esei.aed1.cubirds.iu.IU;
+import es.uvigo.esei.aed1.tads.list.List;
 
 public class Game {
 
@@ -22,6 +23,7 @@ public class Game {
         dealCards();
         fillTable();
         showResults();
+        playGame();
     }
 
     // Pregunta el numero de jugadores y los crea
@@ -71,6 +73,52 @@ public class Game {
         iu.displayMessage(table.showTable());
         for (int i = 0; i < players.length; i++) {
             iu.displayMessage(players[i].showHand());
+        }
+    }
+
+    // Metodo para jugar el turno de un jugador
+    private void playTurn(Player player) {
+        iu.displayMessage(player.showHand());
+
+        iu.displayMessage(player.getName() + " escoge una especie:");
+        TypeBird type = iu.askSpecies(player.getSpecies());
+
+        // Muestra la mesa actualizada antes de pedir la fila
+        iu.displayMessage(table.showTable());
+        int row = iu.askRow();
+        boolean left = iu.askSide();
+
+        List<Card> playedCards = player.removeSpecies(type);
+
+        if (left) {
+            table.addLeft(row, playedCards);
+        } else {
+            table.addRight(row, playedCards);
+        }
+
+        List<Card> surrounded = table.collectSurrounded(row, type, left);
+        for (Card card : surrounded) {
+            player.addCard(card);
+        }
+
+        iu.displayMessage(player.showHand());
+    }
+
+    // Metodo para controlar el flujo del juego hasta que un jugador se quede sin
+    // cartas
+    private void playGame() {
+        boolean gameOver = false;
+
+        while (!gameOver) {
+            for (int i = 0; i < players.length; i++) {
+                playTurn(players[i]);
+
+                if (players[i].getSpecies().isEmpty()) {
+                    iu.displayMessage(players[i].getName() + " se ha quedado sin cartas!");
+                    gameOver = true;
+                    break;
+                }
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
 package gal.uvigo.esei.aed1.cubirds.iu;
 
-
 import java.util.Scanner;
+import es.uvigo.esei.aed1.tads.list.List;
+import gal.uvigo.esei.aed1.cubirds.core.TypeBird;
 
 public class IU {
 
@@ -35,17 +36,17 @@ public class IU {
     }
 
     public int askNumberOfPlayers() {
-    int num;
-    do {
-        num = readNumber("¿Cuántos jugadores van a jugar? (2-5): ");
-    } while (num < 2 || num > 5);
+        int num;
+        do {
+            num = readNumber("¿Cuántos jugadores van a jugar? (2-5): ");
+        } while (num < 2 || num > 5);
         return num;
     }
 
     public String askPlayerName(int i) {
         System.out.print("Introduce el nombre del jugador " + i + ": ");
         return keyboard.nextLine();
-}
+    }
 
     /**
      * Lee un string de teclado
@@ -69,6 +70,41 @@ public class IU {
         System.out.println(msg);
     }
 
-    
+    // Muestra las especies disponibles y pide al usuario que escoja una
+    public TypeBird askSpecies(List<TypeBird> species) {
+        // Muestra las especies numeradas
+        int i = 1;
+        for (TypeBird type : species) {
+            System.out.println(i + ". " + type);
+            i++;
+        }
+
+        // Pide un numero valido
+        int choice;
+        do {
+            choice = readNumber("Escoge una especie: ");
+        } while (choice < 1 || choice > species.size());
+
+        // Devuelve la especie escogida
+        return species.get(choice - 1);
+    }
+
+    // Pide al usuario que escoja una fila y devuelve el indice (0-3)
+    public int askRow() {
+        int row;
+        do {
+            row = readNumber("Escoge una fila (1-4): ");
+        } while (row < 1 || row > 4);
+        return row - 1; // devuelve 0-3 para usar como indice
+    }
+
+    // Pide al usuario que escoja un lado
+    public boolean askSide() {
+        int side;
+        do {
+            side = readNumber("Coloca a la izquierda (1) o derecha (2): ");
+        } while (side < 1 || side > 2);
+        return side == 1; // true si izquierda, false si derecha
+    }
 
 }
