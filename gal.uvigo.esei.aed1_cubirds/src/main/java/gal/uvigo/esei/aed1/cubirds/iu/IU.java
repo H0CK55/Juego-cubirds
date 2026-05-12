@@ -107,4 +107,26 @@ public class IU {
         return side == 1; // true si izquierda, false si derecha
     }
 
+    public boolean askIfDiscard() {
+        int answer;
+        do {
+            answer = readNumber("¿Deseas añadir una especie a tu zona de juego? (1: Si, 2: No): ");
+        } while (answer < 1 || answer > 2);
+        return answer == 1;
+    }
+
+    public TypeBird askSpeciesForCollection(List<TypeBird> species) {
+        System.out.println("Escoge una especie para añadir a tu zona de juego:");
+        int i = 1;
+        for (TypeBird type : species) {
+            System.out.println(i + ". " + type);
+            i++;
+        }
+        int choice;
+        do {
+            choice = readNumber("Escoge una especie: ");
+        } while (choice < 1 || choice > species.size());
+        return species.get(choice - 1);
+    }
+
 }

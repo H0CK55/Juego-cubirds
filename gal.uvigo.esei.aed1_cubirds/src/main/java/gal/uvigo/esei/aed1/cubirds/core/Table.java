@@ -59,22 +59,61 @@ public class Table {
     }
 
     // Recoge las cartas rodeadas de la especie dada en la fila indicada
+    // Recoge las cartas rodeadas de una especie en una fila
     public List<Card> collectSurrounded(int fila, TypeBird type, boolean left) {
         List<Card> surrounded = new LinkedList<>();
         List<Card> row = rows.get(fila);
 
-        if (left) {
-            // Saca cartas del principio hasta encontrar la especie
-            while (!row.isEmpty() && row.getFirst().getTypeBird() != type) {
-                surrounded.addLast(row.removeFirst());
+        int first = -1;
+        int last = -1;
+
+        for (int i = 0; i < row.size(); i++) {
+            if (row.get(i).getTypeBird() == type) {
+                if (first == -1) {
+                    first = i;
+                }
+                last = i;
             }
-        } else {
-            // Saca cartas del final hasta encontrar la especie
-            while (!row.isEmpty() && row.getLast().getTypeBird() != type) {
-                surrounded.addFirst(row.removeLast());
-            }
+        }
+
+        // Si no hay al menos dos cartas de la especie, no se rodea nada
+        if (first == -1 || first == last) {
+            return surrounded;
+        }
+
+        // Recoge las cartas entre ambas especies
+        for (int i = first + 1; i < last; i++) {
+            surrounded.addLast(row.get(i));
+        }
+
+        // Elimina esas cartas de la fila
+        for (int i = last - 1; i > first; i--) {
+            row.remove(i);
         }
 
         return surrounded;
     }
+
+    // Devuelve true si todas las cartas de la fila son de la misma especie
+    public boolean hasOnlyOneSpecies(int fila) {
+        if (rows.get(fila).isEmpty()) {
+            return false;
+        }
+        TypeBird type = rows.get(fila).getFirst().getTypeBird();
+        for (Card card : rows.get(fila)) {
+            if (card.getTypeBird() != type) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Devuelve la especie de la primera carta de la fila
+    public TypeBird getFirstSpecies(int fila) {
+        if (rows.get(fila).isEmpty()) {
+            return null;
+        }
+        return rows.get(fila).getFirst().getTypeBird();
+    }
+
 }
